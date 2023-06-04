@@ -1,5 +1,6 @@
 package ru.netology.web;
 
+import com.codeborne.selenide.Condition;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
 
@@ -28,9 +29,11 @@ class RegistrationTest {
         $("[data-test-id='phone'] input").setValue("+79990001122");
         $("[data-test-id='agreement']").click();
         $$("button").find(exactText("Забронировать")).click();
-        $("[data-test-id='notification']").shouldBe(visible, Duration.ofSeconds(15000));
+        $("[data-test-id='notification']").shouldBe(visible, Duration.ofSeconds(15));
         $(withText("Успешно!")).shouldBe(visible);
-        $(byText("Встреча успешно забронирована на " + date));
+        $(".notification__content")
+                .shouldHave(Condition.text("Встреча успешно забронирована на " + date), Duration.ofSeconds(15))
+                .shouldBe(Condition.visible);
     }
 
     @Test
@@ -82,9 +85,11 @@ class RegistrationTest {
         $("[data-test-id='phone'] input").setValue("+79990001122");
         $("[data-test-id='agreement']").click();
         $$("button").find(exactText("Забронировать")).click();
-        $("[data-test-id='notification']").shouldBe(visible, Duration.ofSeconds(15000));
+        $("[data-test-id='notification']").shouldBe(visible, Duration.ofSeconds(15));
         $(withText("Успешно!")).shouldBe(visible);
-        $(withText("Встреча успешно забронирована на " + datePlus(4, "dd.MM.yyyy")));
+        $(".notification__content")
+                .shouldHave(Condition.text("Встреча успешно забронирована на " + datePlus(4,"dd.MM.yyyy")), Duration.ofSeconds(15))
+                .shouldBe(Condition.visible);
     }
 
     @Test
